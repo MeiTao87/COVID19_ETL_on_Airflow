@@ -1,0 +1,8 @@
+__pycache__
+.vscode
+examples
+COVID.ipynb
+.ipynb_checkpoints
+covid19.sqlite
+resd_sql.py
+test.py
