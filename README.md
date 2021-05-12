@@ -17,7 +17,7 @@
     * function sql2figure will make a plot of "confirmed cases" of selected country from the starting day.
 
 ## Example:
-* In the figure folder, a image report of confirmed COVID cases of selected country will be automatically generated daily.
+* In the figure folder, image reports of confirmed COVID cases of selected country will be automatically generated every day.
 ![example daily report image](./figure/2021-05-12.png)
 
 
