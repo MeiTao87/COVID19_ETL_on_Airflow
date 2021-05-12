@@ -6,6 +6,7 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 import sqlite3
+import matplotlib.pyplot as plt
 
 
 
@@ -87,5 +88,57 @@ def covid_etl(country, starting_date): # starting_date format: "01-22-2020"
             else:
                 print('Error, cannot download data.')
     
+# Confirmed
+def sql2figure(country, starting_date):
+    try:
+        os.mkdir('./figure')
+    except:
+        print('figure path already exsit')
+    date_cases = []
+    con = sqlite3.connect("./covid19.sqlite")
+    q = '''
+        SELECT Last_Update, Confirmed FROM covid19 ORDER BY Last_Update;
+        '''
+    df = pd.read_sql(q, con)
+    print(df.head())
+    today = datetime.date.today()
+    lastday = (today - datetime.timedelta(days=1)).strftime('%m-%d-%Y')
+    lastday = datetime.datetime.strptime(lastday, "%m-%d-%Y")
+    startday = datetime.datetime.strptime(starting_date, "%m-%d-%Y")
+    
+    # endday = datetime.datetime.strptime(today, "%m-%d-%Y")
+    for i in range((lastday - startday).days + 1):
+        day = startday + datetime.timedelta(days=i)
+        day_str = "%d-%02d-%02d" % (day.year, day.month, day.day)
+        df_selected = df[df['Last_Update'].str.contains(day_str)]
+        confirmed = df_selected.sum()['Confirmed']
+        date_cases.append([day_str, confirmed])
+        print(f'Date: {day_str}, confirmed cases are: {confirmed}')
+    length = len(date_cases)
+    date = []
+    cases = []
+    for i in range(1, length):
+        date.append(date_cases[i][0]) 
+        cases.append(date_cases[i][1])
+    title = f'COVID-19 confirmed cases from {startday} to {today} of {country}'
+    
+    fig_save_path = f'./figure/{today}.png'
+    print(cases)
+    plt.figure(figsize=(14,8))
+    plt.title(title)
+    plt.xticks(rotation=90)
+    plt.ticklabel_format(style = 'plain')
+    plt.plot(date, cases)
+    plt.ylim(bottom=0)
+    plt.tight_layout()
+    plt.savefig(fig_save_path)
+    plt.show()
+    
+def main(country, starting_date):
+    covid_etl(country, starting_date)
+    sql2figure(country, starting_date)
+
+
+
 if __name__ == '__main__':
-    covid_etl('India')
+    main('India', '03-01-2021')

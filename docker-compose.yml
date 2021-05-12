@@ -25,7 +25,9 @@ services:
       - EXECUTOR=Local
       - FERNET_KEY=jsDPRErfv8Z_eVTnGfF8ywd19j4pyqE3NpdUBA_oRTo=
     volumes:
+      - ./requirement.txt:/usr/local/airflow/requirement.txt
       - ./dags:/usr/local/airflow/dags
+      - ./figure:/usr/local/airflow/figure
       # Uncomment to include custom plugins
       # - ./plugins:/usr/local/airflow/plugins
     ports:

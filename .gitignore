@@ -4,5 +4,7 @@ examples
 COVID.ipynb
 .ipynb_checkpoints
 covid19.sqlite
-resd_sql.py
+read_sql.py
 test.py
+Pipfile
+Pipfile.lock
