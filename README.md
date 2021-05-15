@@ -18,6 +18,6 @@
 
 ## Example:
 * In the figure folder, image reports of confirmed COVID cases of selected country will be automatically generated every day.
-![example daily report image](./figure/2021-05-12.png)
+![example daily report image](./figure/2021-05-15.png)
 
 
