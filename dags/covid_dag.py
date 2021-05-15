@@ -12,7 +12,7 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
+    'retries': 5,
     'retry_delay': timedelta(minutes=1)
 }
 
@@ -26,19 +26,26 @@ dag = DAG(
 # def just_a_function():
 #     print("I'm going to show you something :)")
 
-install = BashOperator(
-    task_id="install requirement",
-    bash_command='python -m pip install -r requirement.txt',
-)
+templated_command = """
+    cd /usr/local/airflow/req
+    pwd
+    ls
+    python -m pip install -r requirements.txt
+"""
 
+install = BashOperator(
+    task_id="install",
+    bash_command=templated_command,
+    dag=dag,
+)
 download = PythonOperator(
-    task_id='download data to database',
+    task_id='download',
     python_callable=covid_etl,
     op_args=['India', '01-01-2021'],
     dag=dag,
 )
 plot_save = PythonOperator(
-    task_id='plot and save',
+    task_id='plot_save',
     python_callable=sql2figure,
     op_args=['India', '01-01-2021'],
     dag=dag,

@@ -6,7 +6,6 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 import sqlite3
-import matplotlib.pyplot as plt
 
 
 
@@ -90,6 +89,8 @@ def covid_etl(country, starting_date): # starting_date format: "01-22-2020"
     
 # Confirmed
 def sql2figure(country, starting_date):
+    import matplotlib.pyplot as plt
+
     try:
         os.mkdir('./figure')
     except:
